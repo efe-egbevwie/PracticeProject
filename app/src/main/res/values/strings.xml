@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Leaderboard</string>
+    <string name="title_activity_splash">FullscreenActivity</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_1st_fragment">Hello 1st fragment</string>
+    <string name="hello_2nd_fragment">Hello 2nd fragment</string>
+    <string name="submit">Submit</string>
+    <string name="learning_hours_text">learning hours</string>
+    <string name="skiil_iq_score_text">skill IQ score</string>
+    <string name="first_name_hint">First Name</string>
+    <string name="project_submission_banner">Project Submission</string>
+    <string name="last_name_hint">Last Name</string>
+    <string name="email_address_hint">Email Address</string>
+    <string name="submit_hint">project on GITHUB (link)</string>
+    <string name="submit_button_hint">Submit</string>
+</resources>
