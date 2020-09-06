@@ -16,7 +16,7 @@ import android.widget.Toast;
 import com.efe.leaderboard.CustomClasses.SubmitData;
 import com.efe.leaderboard.R;
 import com.efe.leaderboard.Utils.ApiInterface;
-import com.efe.leaderboard.Utils.RetrofitClient2;
+import com.efe.leaderboard.Utils.RetroFitClient;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -24,9 +24,9 @@ import retrofit2.Response;
 
 public class SubmitActivity extends AppCompatActivity {
 
-    Button sumbmitButton;
+    Button submitButton;
     Button yesButton;
-    ImageButton cancelDialog;
+    ImageButton cancelDialogButton;
 
     EditText editFirstName;
     EditText editLastName;
@@ -42,8 +42,8 @@ public class SubmitActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_submit);
 
-        sumbmitButton = findViewById(R.id.submit_button);
-        sumbmitButton.setOnClickListener(new View.OnClickListener() {
+        submitButton = findViewById(R.id.submit_button);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 submitDialog();
@@ -54,9 +54,6 @@ public class SubmitActivity extends AppCompatActivity {
         editLastName = findViewById(R.id.submit_last_name);
         editEmail = findViewById(R.id.submit_email_address);
         editGitLink = findViewById(R.id.submit_github);
-
-
-
 
     }
 
@@ -79,8 +76,8 @@ public class SubmitActivity extends AppCompatActivity {
         });
 
 
-        cancelDialog = dialog.findViewById(R.id.cancel_dialog);
-        cancelDialog.setOnClickListener(new View.OnClickListener() {
+        cancelDialogButton = dialog.findViewById(R.id.cancel_dialog_button);
+        cancelDialogButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
              alertDialog.dismiss();
@@ -97,7 +94,6 @@ public class SubmitActivity extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         alertDialog.show();
 
-
     }
 
     private void errorDialog () {
@@ -112,26 +108,28 @@ public class SubmitActivity extends AppCompatActivity {
 
     private void submit() {
 
-        String firstName = editFirstName.getText().toString();
-        String lastName = editLastName.getText().toString();
-        String email = editEmail.getText().toString();
-        String gitLink = editGitLink.getText().toString();
+        String firstName = editFirstName.getText().toString().trim();
+        String lastName = editLastName.getText().toString().trim();
+        String email = editEmail.getText().toString().trim();
+        String gitLink = editGitLink.getText().toString().trim();
 
-        ApiInterface apiInterface = RetrofitClient2.getDataInstance().create(ApiInterface.class);
-        Call<SubmitData> call = apiInterface.submit(email,firstName,lastName,gitLink);
-        call.enqueue(new Callback<SubmitData>() {
+        ApiInterface apiInterface = RetroFitClient.postInstance().create(ApiInterface.class);
+        Call<Void> call = apiInterface.submit(email,firstName,lastName,gitLink);
+        call.enqueue(new Callback<Void>() {
             @Override
-            public void onResponse(Call<SubmitData> call, Response<SubmitData> response) {
-                submitData = response.body();
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful()) {
+                    successDialog();
+                    Toast.makeText(SubmitActivity.this, "post success", Toast.LENGTH_SHORT).show();
+                }
                 Log.d("TAG",response.code()+"");
-                Toast.makeText(SubmitActivity.this, "post success", Toast.LENGTH_SHORT).show();
             }
 
             @Override
-            public void onFailure(Call<SubmitData> call, Throwable t) {
-                //Toast.makeText(SubmitActivity.this, "post failed", Toast.LENGTH_SHORT).show();
-                Log.d("Post failed",t.toString(),t);
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.d("POSTFAILED",t.toString());
                 Toast.makeText(SubmitActivity.this, t.toString(), Toast.LENGTH_LONG).show();
+                errorDialog();
 
 
             }

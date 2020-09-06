@@ -3,11 +3,11 @@ package com.efe.leaderboard.CustomClasses;
 import com.google.gson.annotations.SerializedName;
 
 public class SubmitData {
-    @SerializedName("Email Address")
+    @SerializedName("Email")
     public String email;
     @SerializedName("Name")
     public String name;
-    @SerializedName("Last name")
+    @SerializedName("Last Name")
     public String lastName;
     @SerializedName("Link to project")
     public String projectLink;
